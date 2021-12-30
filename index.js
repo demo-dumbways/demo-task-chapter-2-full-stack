@@ -81,7 +81,7 @@ app.get('/blog', function(req,res){ // Route for blog data
                     post_at: getFullTime(blog.post_at),
                     post_age: getDistanceTime(blog.post_at),
                     isLogin: req.session.isLogin,
-                    image: '/uploads/' + blog.image
+                    image: blog.image ? '/uploads/' + blog.image : '/public/assets/blog-img.png'
                 }
             })
 
@@ -112,7 +112,7 @@ app.post('/blog', upload.single('image'), function(req,res){ // Route for post b
     }
 
     let authorId = req.session.user.id
-    let image = req.file ? req.file.filename : '/public/assets/blog-image.png'
+    let image = req.file ? req.file.filename : null
 
     let query = `INSERT INTO blog(title, content, image, author_id) VALUES ('${data.title}', '${data.content}', '${image}', '${authorId}')`
 
