@@ -81,7 +81,7 @@ app.get('/blog', function(req,res){ // Route for blog data
                     post_at: getFullTime(blog.post_at),
                     post_age: getDistanceTime(blog.post_at),
                     isLogin: req.session.isLogin,
-                    image: blog.image == null ? '/public/assets/blog-img.png' :  '/uploads/' + blog.image
+                    image: blog.image == 'null' ? '/public/assets/blog-img.png' :  '/uploads/' + blog.image
                 }
             })
 
