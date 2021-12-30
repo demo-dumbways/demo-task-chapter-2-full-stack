@@ -112,7 +112,7 @@ app.post('/blog', upload.single('image'), function(req,res){ // Route for post b
     }
 
     let authorId = req.session.user.id
-    let image = req.file.filename
+    let image = req.file.filename ? req.file.filename : '/public/assets/blog-image.png'
 
     let query = `INSERT INTO blog(title, content, image, author_id) VALUES ('${data.title}', '${data.content}', '${image}', '${authorId}')`
 
