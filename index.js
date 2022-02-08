@@ -161,25 +161,29 @@ app.get('/detail-blog/:id', function (req, res) {
   db.connect(function (err, client, done) {
     if (err) throw err;
 
-    client.query(`SELECT * FROM blog WHERE id = ${id}`, function (err, result) {
-      if (err) throw err;
-      let data = result.rows[0];
-      done();
+    client.query(
+      `SELECT blog.*, tb_user.name AS author FROM blog LEFT JOIN tb_user
+    ON blog.author_id = tb_user.id WHERE blog.id = ${id}`,
+      function (err, result) {
+        if (err) throw err;
+        let data = result.rows[0];
+        done();
 
-      data = {
-        ...data,
-        post_at: getFullTime(data.post_at),
-        post_age: getDistanceTime(data.post_at),
-        image:
-          data.image == 'null'
-            ? '/public/assets/blog-img.png'
-            : '/uploads/' + data.image,
-      };
+        data = {
+          ...data,
+          post_at: getFullTime(data.post_at),
+          post_age: getDistanceTime(data.post_at),
+          image:
+            data.image == 'null'
+              ? '/public/assets/blog-img.png'
+              : '/uploads/' + data.image,
+        };
 
-      console.log(data);
+        console.log(data);
 
-      res.render('blog-detail', { id: id, blog: data });
-    });
+        res.render('blog-detail', { id: id, blog: data });
+      }
+    );
   });
 });
 
