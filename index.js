@@ -83,7 +83,7 @@ app.get('/blog', function (req, res) {
           ...blog,
           post_at: getFullTime(blog.post_at),
           post_age: getDistanceTime(blog.post_at),
-          isLogin: req.session.isLogin,
+          isLogin: req.session.isLogin ? true : false,
           image:
             blog.image == 'null'
               ? '/public/assets/blog-img.png'
