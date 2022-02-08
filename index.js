@@ -169,7 +169,7 @@ app.get('/detail-blog/:id', function (req, res) {
         post_at: getFullTime(data.post_at),
         post_age: getDistanceTime(data.post_at),
         image:
-          blog.image == 'null'
+          data.image == 'null'
             ? '/public/assets/blog-img.png'
             : '/uploads/' + data.image,
       };
