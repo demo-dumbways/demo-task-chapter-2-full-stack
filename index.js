@@ -164,6 +164,16 @@ app.get('/detail-blog/:id', function (req, res) {
       let data = result.rows[0];
       done();
 
+      data = {
+        ...data,
+        post_at: getFullTime(data.post_at),
+        post_age: getDistanceTime(data.post_at),
+        image:
+          blog.image == 'null'
+            ? '/public/assets/blog-img.png'
+            : '/uploads/' + data.image,
+      };
+
       console.log(data);
 
       res.render('blog-detail', { id: id, blog: data });
