@@ -91,6 +91,8 @@ app.get('/blog', function (req, res) {
         };
       });
 
+      console.log(data);
+
       res.render('blog', {
         isLogin: req.session.isLogin,
         blogs: data,
