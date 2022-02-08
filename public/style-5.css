@@ -1,0 +1,308 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;800&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+nav {
+  display: flex;
+  background-color: #f4f3f3;
+  height: 8vh;
+  margin: 0;
+}
+
+nav div {
+  display: flex;
+  flex: 50%;
+  align-items: center;
+}
+
+nav div ol {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+nav ol li {
+  display: inline;
+  margin-left: 40px;
+}
+
+nav div.left-side {
+  padding-left: 90px;
+}
+
+nav div.right-side {
+  padding-right: 90px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+nav div.right-side a.contact {
+  font-size: 15px;
+  color: white;
+  background-color: black;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+  margin-left: 30px;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+/* Form */
+.container-1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 92vh;
+  background-color: #e3e7eb;
+}
+
+.container-1 .form-container {
+  box-sizing: border-box;
+  width: 500px;
+}
+
+.container-1 .form-container h4 {
+  font-weight: 900;
+}
+
+.container-1 .form-container .project-input {
+  margin-bottom: 30px;
+}
+
+.container-1 .form-container .project-input input {
+  height: 38px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 2px;
+  box-shadow: 3px 3px 5px rgb(216, 216, 216);
+  border: 1px solid rgb(204, 204, 204);
+  box-sizing: border-box !important;
+}
+
+.container-1 .form-container .date-input input {
+  height: 38px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 2px;
+  box-shadow: 3px 3px 5px rgb(216, 216, 216);
+  box-sizing: border-box;
+}
+
+.container-1 .form-container h4 {
+  text-align: center;
+  font-size: 25px;
+}
+
+.container-1 .form-container label {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.container-1 .form-container .project-input input {
+  width: 100%;
+  box-sizing: content-box;
+}
+
+.container-1 .form-container .date-input {
+  display: flex;
+  margin-top: 15px;
+}
+
+.container-1 .form-container .date-input div {
+  flex: 50%;
+}
+
+.container-1 .form-container .date-input input {
+  width: 100%;
+  height: 40px;
+  border: 1px solid rgb(204, 204, 204);
+}
+
+.container-1 .form-container .desc-input {
+  margin-top: 15px;
+}
+
+.container-1 .form-container .desc-input textarea {
+  resize: none;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  margin-top: 2px;
+  box-shadow: 3px 3px 5px rgb(216, 216, 216);
+  border: 1px solid rgb(204, 204, 204);
+  box-sizing: border-box;
+}
+
+.container-1 .form-container .tech-input {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+
+.container-1 .form-container .tech-input .left-checkbox {
+  width: 40%;
+  margin-top: 10px;
+  color: #4d4d4d;
+}
+
+.container-1 .form-container .tech-input .right-checkbox {
+  width: 40%;
+  margin-top: -43px;
+  margin-left: 200px;
+  color: #4d4d4d;
+}
+
+.upload-img {
+  margin-top: 15px;
+}
+
+.upload-img p {
+  display: flex;
+  font-size: 18px;
+  color: rgb(116, 116, 116);
+  background-color: rgb(231, 231, 231);
+  border-radius: 5px;
+  border: 1px solid rgb(204, 204, 204);
+  height: 40px;
+  width: 75px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.upload-img .input-img {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgb(204, 204, 204);
+  width: 100%;
+  height: 40px;
+  font-size: 20px;
+  font-weight: 400;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  background: #ffffff;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 3px 3px 5px rgb(216, 216, 216);
+}
+
+.upload-img label img {
+  width: 20px;
+}
+.btn-submit {
+  text-align: right;
+}
+.btn-submit button {
+  padding: 7px 25px;
+  border: none;
+  color: #ffffff;
+  background-color: rgb(0, 0, 20);
+  border-radius: 20px;
+  font-weight: 800;
+  /* margin-left: 75%; */
+  margin-top: 30px;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.btn-submit button:hover {
+  opacity: 75%;
+}
+
+/* section-2, project list */
+
+.container-2 h4 {
+  font-size: 25px;
+  font-weight: 900;
+  text-align: center;
+  margin-top: 50px;
+}
+
+.project-list {
+  width: 1030px;
+  margin: 20px auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.project-list-item {
+  margin: 20px;
+  width: 300px;
+  height: 430px;
+  box-shadow: 0px 5px 20px rgb(216, 216, 216);
+  border: 0.2px solid rgb(216, 216, 216);
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.project-list-item .card-img {
+  width: 280px;
+  height: 200px;
+  margin: 10px auto;
+}
+
+.project-list-item .card-img img {
+  width: 280px;
+  border-radius: 8px;
+}
+
+.project-list-item .card-title {
+  padding-left: 10px;
+  margin-top: -8px;
+  font-size: 14px;
+}
+
+.project-list-item .card-drt {
+  color: #585858a6;
+  padding-left: 10px;
+  margin-top: -12px;
+}
+
+.project-list-item .card-desc {
+  margin-top: -10px;
+  font-size: 12px;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: justify;
+  height: 70px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.project-list-item .card-icon img {
+  width: 30px;
+  padding-left: 10px;
+  margin-top: 10px;
+}
+
+.project-list-item .card-btn {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px;
+  margin-top: 10px;
+}
+
+.project-list-item .card-btn button {
+  width: 140px;
+  height: 25px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgb(0, 0, 20);
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 15px;
+  margin: 2px;
+}

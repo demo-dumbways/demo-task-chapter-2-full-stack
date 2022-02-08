@@ -27,16 +27,6 @@ const month = [
   'December',
 ];
 
-let blogs = [
-  {
-    title: 'Pasar Coding di Indonesia Dinilai Masih Menjanjikan',
-    content:
-      'Ketimpangan sumber daya manusia (SDM) di sektor digital masih menjadi isu yang belum terpecahkan. Berdasarkan penelitian ManpowerGroup, ketimpangan SDM global, termasuk Indonesia, meningkat dua kali lipat dalam satu dekade terakhir. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam, molestiae numquam! Deleniti maiores expedita eaque deserunt quaerat! Dicta, eligendi debitis?',
-    author: 'Ichsan Emrald Alamsyah',
-    post_at: '12 Jul 2021 22:30 WIB',
-  },
-];
-
 app.set('view engine', 'hbs'); // set tample engine
 
 app.use('/public', express.static(__dirname + '/public')); // set public folder/path
@@ -60,7 +50,35 @@ app.use(
 );
 
 app.get('/', (req, res) => {
-  res.render('index');
+  let query = 'SELECT * from tb_project';
+  db.connect(function (err, client, done) {
+    if (err) throw err;
+
+    client.query(query, function (err, result) {
+      if (err) throw err;
+      done();
+      let data = result.rows;
+
+      data = data.map(function (blog) {
+        return {
+          ...blog,
+          duration: monthDuration(
+            new Date(blog.end_date),
+            new Date(blog.start_date)
+          ),
+          isLogin: req.session.isLogin ? true : false,
+          image:
+            blog.image == 'null'
+              ? '/public/assets/my-img.png'
+              : '/uploads/' + blog.image,
+        };
+      });
+
+      res.render('index', {
+        projects: data,
+      });
+    });
+  });
 });
 
 app.get('/blog', function (req, res) {
@@ -102,28 +120,29 @@ app.get('/blog', function (req, res) {
   });
 });
 
-app.get('/add-blog', function (req, res) {
+app.get('/project', function (req, res) {
   // Route for add-blog
-  res.render('add-blog', {
-    isLogin: req.session.isLogin,
-    user: req.session.user,
+  console.log({
+    isLogin: req.session.isLogin ? true : false,
+    user: req.session.user ? true : false,
+  });
+  res.render('add-project', {
+    isLogin: req.session.isLogin ? true : false,
+    user: req.session.user ? true : false,
   });
 });
 
-app.post('/blog', upload.single('image'), function (req, res) {
+app.post('/project', upload.single('image'), function (req, res) {
   // Route for post blog
-  let data = req.body;
+  let data = {
+    name: req.body.name,
+    desc: req.body.desc,
+    start_date: req.body.start,
+    end_date: req.body.end,
+    image: req.file.filename,
+  };
 
-  if (!req.session.isLogin) {
-    req.flash('danger', 'Please login');
-    return res.redirect('/add-blog');
-  }
-
-  let authorId = req.session.user.id;
-  let image = req.file ? req.file.filename : null;
-
-  let query = `INSERT INTO blog(title, content, image, author_id) VALUES ('${data.title}', '${data.content}', '${image}', '${authorId}')`;
-
+  let query = `INSERT INTO tb_project(name,start_date,end_date,description,image) VALUES ('${data.name}', '${data.start_date}', '${data.end_date}', '${data.desc}','${data.image}')`;
   db.connect(function (err, client, done) {
     if (err) throw err;
 
@@ -131,39 +150,40 @@ app.post('/blog', upload.single('image'), function (req, res) {
       if (err) throw err;
       done();
 
-      res.redirect('/blog');
+      console.log(result);
+
+      res.redirect('/');
     });
   });
 });
 
-app.get('/delete-blog/:id', function (req, res) {
+app.get('/delete-project/:id', function (req, res) {
   let id = req.params.id;
-  let query = `DELETE FROM blog WHERE id = ${id}`;
+  let query = `DELETE FROM tb_project WHERE id = ${id}`;
 
   db.connect(function (err, client, done) {
     if (err) throw err;
     client.query(query, function (err, result) {
       if (err) throw err;
       done();
-      res.redirect('/blog');
+      res.redirect('/');
     });
   });
 });
 
-app.get('/contact-me', function (req, res) {
+app.get('/contact', function (req, res) {
   // Route for contact me
   res.render('contact');
 });
 
-app.get('/detail-blog/:id', function (req, res) {
+app.get('/detail-project/:id', function (req, res) {
   let id = req.params.id;
 
   db.connect(function (err, client, done) {
     if (err) throw err;
 
     client.query(
-      `SELECT blog.*, tb_user.name AS author FROM blog LEFT JOIN tb_user
-    ON blog.author_id = tb_user.id WHERE blog.id = ${id}`,
+      `SELECT * FROM tb_project WHERE tb_project.id = ${id}`,
       function (err, result) {
         if (err) throw err;
         let data = result.rows[0];
@@ -171,19 +191,84 @@ app.get('/detail-blog/:id', function (req, res) {
 
         data = {
           ...data,
-          post_at: getFullTime(data.post_at),
-          post_age: getDistanceTime(data.post_at),
+          duration: monthDuration(
+            new Date(data.end_date),
+            new Date(data.start_date)
+          ),
+          isLogin: req.session.isLogin ? true : false,
           image:
             data.image == 'null'
-              ? '/public/assets/blog-img.png'
+              ? '/public/assets/my-img.png'
               : '/uploads/' + data.image,
         };
 
         console.log(data);
 
-        res.render('blog-detail', { id: id, blog: data });
+        res.render('project-detail', { project: data });
       }
     );
+  });
+});
+
+app.get('/update-project/:id', function (req, res) {
+  let id = req.params.id;
+
+  db.connect(function (err, client, done) {
+    if (err) throw err;
+
+    client.query(
+      `SELECT * FROM tb_project WHERE tb_project.id = ${id}`,
+      function (err, result) {
+        if (err) throw err;
+        let data = result.rows[0];
+        done();
+
+        data = {
+          ...data,
+          duration: monthDuration(
+            new Date(data.end_date),
+            new Date(data.start_date)
+          ),
+          isLogin: req.session.isLogin ? true : false,
+          image:
+            data.image == 'null'
+              ? '/public/assets/my-img.png'
+              : '/uploads/' + data.image,
+        };
+
+        console.log(data);
+
+        res.render('update-project', { project: data });
+      }
+    );
+  });
+});
+
+app.post('/update-project', upload.single('image'), function (req, res) {
+  // Route for post blog
+  let data = req.body;
+  let query;
+  if (req.file) {
+    query = `UPDATE tb_project
+                SET name='${data.name}', start_date='${data.start}', end_date='${data.end}', description='${data.desc}', image='${req.file.filename}'
+                WHERE tb_project.id = ${data.id};`;
+  } else {
+    query = `UPDATE tb_project
+                SET name='${data.name}', start_date='${data.start}', end_date='${data.end}', description='${data.desc}'
+                WHERE tb_project.id = ${data.id};`;
+  }
+
+  db.connect(function (err, client, done) {
+    if (err) throw err;
+
+    client.query(query, function (err, result) {
+      if (err) throw err;
+      done();
+
+      console.log(result);
+
+      res.redirect('/');
+    });
   });
 });
 
@@ -243,7 +328,7 @@ app.post('/login', function (req, res) {
         };
 
         req.flash('success', 'Login success');
-        res.redirect('/blog');
+        res.redirect('/');
       } else {
         req.flash('danger', "Email & Password don't match!");
         res.redirect('/login');
@@ -254,7 +339,7 @@ app.post('/login', function (req, res) {
 
 app.get('/logout', function (req, res) {
   req.session.destroy();
-  res.redirect('/blog');
+  res.redirect('/');
 });
 
 app.listen(PORT, function () {
@@ -292,6 +377,52 @@ function getDistanceTime(time) {
       // Convert to minute
       const minuteDistance = Math.floor(distance / (1000 * 60));
       return minuteDistance + ' minute ago';
+    }
+  }
+}
+
+function monthDuration(endDate, startDate) {
+  let month;
+  let year;
+  let monthDistance;
+  let endMonth = endDate.getMonth();
+  let startMonth = startDate.getMonth();
+  let endYear = endDate.getFullYear();
+  let startYear = startDate.getFullYear();
+
+  if (startYear == endYear) {
+    if (startMonth == endMonth) {
+      month = 1;
+      return 'durasi ' + month + ' bulan';
+    } else {
+      month = endMonth - startMonth;
+      return 'durasi ' + month + ' bulan';
+    }
+  }
+
+  if (endYear > startYear) {
+    if (endYear - startYear == 1) {
+      if (startMonth == endMonth) {
+        return 'durasi 1 tahun';
+      } else if (startMonth > endMonth) {
+        month = (startMonth - endMonth - 12) * -1;
+        return 'durasi ' + month + ' bulan';
+      } else if (startMonth < endMonth) {
+        month = endMonth - startMonth;
+        return 'durasi 1 tahun ' + month + ' bulan';
+      }
+    } else {
+      year = endYear - startYear;
+      if (startMonth == endMonth) {
+        return 'durasi ' + year + ' tahun ';
+      } else if (startMonth > endMonth) {
+        year -= 1;
+        month = (startMonth - endMonth - 12) * -1;
+        return 'durasi ' + year + ' tahun ' + month + ' bulan';
+      } else if (startMonth < endMonth) {
+        month = endMonth - startMonth;
+        return 'durasi ' + year + ' tahun ' + month + ' bulan';
+      }
     }
   }
 }

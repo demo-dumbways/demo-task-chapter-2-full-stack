@@ -1,0 +1,149 @@
+<html lang='en'>
+  <head>
+    <title>Update Project</title>
+    <link rel='stylesheet' href='/public/style-5.css' />
+    <link rel='icon' href='/public/assets/logo.png' />
+  </head>
+
+  <body>
+    <nav>
+      <div class='left-side'>
+        <a href='/'>
+          <img src='/public/assets/logo.png' alt='' />
+        </a>
+
+        <ol>
+          <li style='list-style-type: none'>
+            <a href='/' class='home' target='blank'>Home</a>
+          </li>
+          <li style='list-style-type: none'>
+            <a href='/project' target='blank' class='project'>Add Project</a>
+          </li>
+        </ol>
+      </div>
+
+      <div class='right-side'>
+        {{#if isLogin}}
+          <ol>
+            <li style='list-style-type: none'>
+              <a href='/logout' target='blank'>Logout</a>
+            </li>
+          </ol>
+        {{else}}
+          <ol>
+            <li style='list-style-type: none'>
+              <a href='/register' class='home' target='blank'>Register</a>
+            </li>
+            <li style='list-style-type: none'>
+              <a href='/login' target='blank'>Login</a>
+            </li>
+          </ol>
+        {{/if}}
+        <a href='/contact' target='blank' class='contact'> Contact Me </a>
+      </div>
+    </nav>
+
+    <section class='container-1'>
+      <div class='form-container'>
+        <form
+          action='/update-project'
+          method='POST'
+          enctype='multipart/form-data'
+        >
+          <h4>UPDATE MY PROJECT</h4>
+
+          <input type='hidden' name='id' value={{project.id}} />
+
+          <div class='project-input'>
+            <label for='project'>Project Name</label>
+            <input
+              type='text'
+              id='project'
+              name='name'
+              value={{project.name}}
+              required
+            />
+          </div>
+
+          <div class='date-input'>
+            <div class='start-date'>
+              <label for='start-input'>Start Date</label>
+              <input
+                type='date'
+                required
+                id='start-input'
+                name='start'
+                value={{project.start_date}}
+              />
+            </div>
+            <div class='end-date'>
+              <label for='end-input'>End Date</label>
+              <input
+                type='date'
+                required
+                id='end-input'
+                name='end'
+                value={{project.end_date}}
+              />
+            </div>
+          </div>
+
+          <div class='desc-input'>
+            <label for='desc'>Description</label>
+            <textarea
+              name='desc'
+              id='description'
+              cols='30'
+              rows='10'
+            >{{project.description}}</textarea>
+          </div>
+
+          <div class='tech-input'>
+            <label for='check-box-detail'>Technologies</label>
+            <div class='left-checkbox'>
+              <div>
+                <input value='1' type='checkbox' id='node' name='nodejs' />
+                <label for='node'>Node JS</label>
+              </div>
+              <div>
+                <input value='3' type='checkbox' id='react' name='reactjs' />
+                <label for='react'>React JS</label>
+              </div>
+            </div>
+
+            <div class='right-checkbox'>
+              <div>
+                <input value='2' type='checkbox' id='next' name='nextjs' />
+                <label for='next'>Next JS</label>
+              </div>
+              <div>
+                <input value='4' type='checkbox' id='type' name='typescript' />
+                <label for='type'>Type Script</label>
+              </div>
+            </div>
+          </div>
+
+          <div class='upload-img'>
+            <label for=''>Upload Image</label>
+            <div>
+              <img
+                src={{project.image}}
+                style='width: 200px; border-radius: 10px'
+              />
+            </div>
+            <label class='input-img' for='upload'>
+              <p>choose</p>
+              <img src='/public/assets/file.png' alt='' />
+            </label>
+            <input type='file' id='upload' name='image' hidden />
+          </div>
+
+          <div class='btn-submit'>
+            <button>submit</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </body>
+</html>

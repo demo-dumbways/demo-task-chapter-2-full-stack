@@ -1,0 +1,89 @@
+<html lang='en'>
+  <head>
+    <title>Project Detail</title>
+    <link rel='stylesheet' href='/public/style-5-detail.css' />
+    <link rel='icon' href='/publicassets/logo.png' />
+  </head>
+
+  <body>
+    <nav>
+      <div class='left-side'>
+        <a href='/'>
+          <img src='/public/assets/logo.png' alt='' />
+        </a>
+
+        <ol>
+          <li style='list-style-type: none;'>
+            <a href='/' class='home'>Home</a>
+          </li>
+          <li style='list-style-type: none;'>
+            <a href='/project' class='project'>Add Project</a>
+          </li>
+        </ol>
+      </div>
+
+      <div class='right-side'>
+        <a href='/contact'>
+          Contact Me
+        </a>
+      </div>
+    </nav>
+
+    <div class='project-page'>
+      <div class='proj-title'>
+        <h1>{{project.name}}</h1>
+      </div>
+
+      <div class='proj-detail'>
+        <div class='proj-img'>
+          <img src={{project.image}} alt='' />
+        </div>
+        <div class='proj-detail-info'>
+          <div class='duration-info'>
+            <h3>Duration</h3>
+            <div class='proj-date' id='proj-date'>
+              <img src='/public/assets/calendar.png' alt='' />
+              <label id='start-date'>{{project.start_date}}</label>
+              <label for=''>-</label>
+              <label id='end-date' for=''>{{project.end_date}}</label>
+            </div>
+            <div class='proj-drt'>
+              <img src='/public/assets/clock.png' alt='' />
+              <label for=''>{{project.duration}}</label>
+            </div>
+          </div>
+          <h3>Technologies</h3>
+          <div class='tech-info'>
+            <div class='left-info'>
+              <div class='tech1'>
+                <img id='next' src='/public/assets/javascript.png' alt='' />
+                <label for=''>JavaScript</label>
+              </div>
+              <div class='tech2'>
+                <img id='node' src='/public/assets/node.png' alt='' />
+                <label for=''>Node JS</label>
+              </div>
+            </div>
+
+            <div class='right-info'>
+              <div class='tech3'>
+                <img id='react' src='/public/assets/react.png' alt='' />
+                <label for=''>React JS</label>
+              </div>
+              <div class='tech4'>
+                <img id='type' src='/public/assets/type.png' alt='' />
+                <label for=''>TypeScript</label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class='proj-desc'>
+        <p>{{project.description}}</p>
+      </div>
+    </div>
+
+  </body>
+</html>
